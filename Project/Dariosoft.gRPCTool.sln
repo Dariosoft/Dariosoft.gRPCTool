@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dariosoft.gRPCTool", "gRPCTool\Dariosoft.gRPCTool.csproj", "{E626CD1A-1609-43FA-90A5-76FA80F94C03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{90CC4CE1-51E7-406D-B581-EF32C766E885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dariosoft.TestConsole", "TestConsole\Dariosoft.TestConsole.csproj", "{6097445D-30E8-43AD-8E6E-F189F5373D62}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E626CD1A-1609-43FA-90A5-76FA80F94C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E626CD1A-1609-43FA-90A5-76FA80F94C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E626CD1A-1609-43FA-90A5-76FA80F94C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E626CD1A-1609-43FA-90A5-76FA80F94C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6097445D-30E8-43AD-8E6E-F189F5373D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6097445D-30E8-43AD-8E6E-F189F5373D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6097445D-30E8-43AD-8E6E-F189F5373D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6097445D-30E8-43AD-8E6E-F189F5373D62}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E626CD1A-1609-43FA-90A5-76FA80F94C03} = {90CC4CE1-51E7-406D-B581-EF32C766E885}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1709AB05-4BA2-482D-AC73-5FE85C09C3B8}
+	EndGlobalSection
+EndGlobal
