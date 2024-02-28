@@ -71,9 +71,9 @@ class Program
 
         var host = builder.Build();
         
-        var xTypeFactory = host.Services.GetService<Factories.IXTypeFactory>()!;
+      //  var xTypeFactory = host.Services.GetService<Factories.IXTypeFactory>()!;
 
-        var xInfo = xTypeFactory.Create(typeof(IRequest<ValueTask<int?>>));
+       // var xInfo = xTypeFactory.Create(typeof(IRequest<ValueTask<int?>>));
         
 /*
         var refinery = host.Services.GetService<TypeRefineries.ITypeRefinery>()!;

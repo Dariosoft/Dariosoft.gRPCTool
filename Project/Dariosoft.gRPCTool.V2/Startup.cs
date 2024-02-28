@@ -20,6 +20,8 @@ namespace Dariosoft.gRPCTool.V2
                 .AddSingleton<Factories.INameFactory, Factories.NameFactory>()
                 .AddSingleton<Factories.IXTypeFactory, Factories.XTypeFactory>()
                 
+                .AddSingleton<ElementNameStrategies.ServiceNameStrategy>()
+                
                 .AddSingleton<TypeRefineries.ITypeRefinery, TypeRefineries.TypeRefinery>()
                 .AddSingleton<IEngine, Engine>()
                 .Configure(configure);

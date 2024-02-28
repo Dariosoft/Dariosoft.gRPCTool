@@ -4,6 +4,7 @@ namespace Dariosoft.gRPCTool.V2.Composers
 {
     public class ProtobufProcedureComponentComposer(
         Factories.INameFactory nameFactory,
+        Factories.IXTypeFactory xTypeFactory,
         IEnumerable<Filters.IProcedureFilter> filters,
         ProtobufMessageComponentComposer next) : ComponentComposer(next)
     {
@@ -23,7 +24,7 @@ namespace Dariosoft.gRPCTool.V2.Composers
                     .Select(e =>
                     {
                         var reqMessageElement = new Elements.RequestMessageElement(e.MethodInfo);
-                        var replyMessageElement = Elements.MessageElement.ReplyMessage(e.MethodInfo.ReturnType);
+                        var replyMessageElement = Elements.MessageElement.ReplyMessage(xTypeFactory.Create(e.MethodInfo.ReturnType));
 
                         return new Components.ProtobufProcedureComponent
                         {
@@ -31,12 +32,12 @@ namespace Dariosoft.gRPCTool.V2.Composers
                             Name = nameFactory.Create(e),
                             RequestMessage = new Components.ProtobufProcedureRequestMessageModel
                             {
-                                Name = nameFactory.Create(reqMessageElement),
+                                Name = reqMessageElement.HasParameter() ? nameFactory.Create(reqMessageElement) : nameFactory.GoogleEmptyMessage(),
                                 Source = reqMessageElement,
                             },
                             ReplyMessage = new Components.ProtobufMessageComponent
                             {
-                                Name = nameFactory.Create(replyMessageElement),
+                                Name = replyMessageElement.MessageType.IsVoid ? nameFactory.GoogleEmptyMessage() :  nameFactory.Create(replyMessageElement),
                                 Source = replyMessageElement,
                             }
                         };

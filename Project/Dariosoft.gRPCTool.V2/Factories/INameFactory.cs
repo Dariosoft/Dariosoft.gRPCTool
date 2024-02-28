@@ -1,10 +1,10 @@
-using System.Reflection;
-
 namespace Dariosoft.gRPCTool.V2.Factories
 {
     public interface INameFactory
     {
         Models.NameModel Create(Elements.Element element);
+
+        Models.NameModel GoogleEmptyMessage();
     }
 
     class NameFactory : INameFactory
@@ -26,5 +26,7 @@ namespace Dariosoft.gRPCTool.V2.Factories
                 ? new Models.NameModel(element.Target.Name, $"Grpc{element.Target.Name}")
                 : strategy.Create(element);
         }
+
+        public Models.NameModel GoogleEmptyMessage() => new ("Empty", Utilities.GoogleProtobuf.EmptyMessage);
     }
 }

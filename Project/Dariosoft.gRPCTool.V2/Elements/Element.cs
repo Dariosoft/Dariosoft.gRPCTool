@@ -24,10 +24,10 @@ namespace Dariosoft.gRPCTool.V2.Elements
         }
 
         public Type ServiceType { get; }
-        
+
         private static bool Elligable(Type serviceType)
         {
-            return (serviceType.IsClass || serviceType.IsInterface) && 
+            return (serviceType.IsClass || serviceType.IsInterface) &&
                    serviceType != typeof(object) &&
                    serviceType != typeof(void) &&
                    serviceType is { IsEnum: false, IsPrimitive: false };
@@ -41,7 +41,7 @@ namespace Dariosoft.gRPCTool.V2.Elements
         {
             this.MethodInfo = methodInfo;
         }
-        
+
         public MethodInfo MethodInfo { get; }
     }
 
@@ -52,30 +52,32 @@ namespace Dariosoft.gRPCTool.V2.Elements
         {
             this.MethodInfo = methodInfo;
         }
-        
+
         public MethodInfo MethodInfo { get; }
+
+        public bool HasParameter() => MethodInfo.GetParameters().Any(p => !p.IsOut);
     }
 
-   /* public class ReplyMessageElement : Element
-    {
-        public ReplyMessageElement(Type returnType)
-            : base(returnType, Enums.ElementType.ReplyMessage)
-        {
-        }
-    }*/
+    /* public class ReplyMessageElement : Element
+     {
+         public ReplyMessageElement(Type returnType)
+             : base(returnType, Enums.ElementType.ReplyMessage)
+         {
+         }
+     }*/
 
     public class MessageElement : Element
     {
-        private MessageElement(Type target, Enums.ElementType type)
-            : base(target, type)
+        private MessageElement(Models.XType target, Enums.ElementType type)
+            : base(target.Type, type)
         {
             MessageType = target;
         }
 
-        public Type MessageType { get; }
-        public static MessageElement ReplyMessage(Type target) => new MessageElement(target, Enums.ElementType.ReplyMessage);
-        
-        public static MessageElement DataMessage(Type target) => new MessageElement(target, Enums.ElementType.Message);
+        public Models.XType MessageType { get; }
+        public static MessageElement ReplyMessage(Models.XType target) => new MessageElement(target, Enums.ElementType.ReplyMessage);
+
+        public static MessageElement DataMessage(Models.XType target) => new MessageElement(target, Enums.ElementType.Message);
     }
 
     public class EnumElement : Element

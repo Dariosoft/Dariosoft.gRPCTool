@@ -11,13 +11,12 @@ namespace Dariosoft.gRPCTool.V2.Components
             init
             {
                 _source = value;
-                Parameters = value is null ? [] : value.MethodInfo.GetParameters();
+                Parameters = value is null ? [] : value.MethodInfo.GetParameters().Where(p => !p.IsOut).ToArray();
             }
         }
         
         public required Models.NameModel Name { get; init; }
 
-        public bool IsEmptyMessage => Parameters.Length == 0;
         public ParameterInfo[] Parameters { get; private init; } = [];
         
         public override string ToString() => Name.ProtobufName;

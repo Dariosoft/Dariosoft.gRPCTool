@@ -8,8 +8,6 @@ namespace Dariosoft.gRPCTool.V2.Components
         public required Elements.MessageElement Source { get; init; }
         public required NameModel Name { get; init; }
 
-        public bool IsEmptyMessage => Source.MessageType == typeof(void) || Source.MessageType == typeof(Task) || Source.MessageType == typeof(ValueTask);
-        
         public override string ToString() => Name.ProtobufName;
     }
 }

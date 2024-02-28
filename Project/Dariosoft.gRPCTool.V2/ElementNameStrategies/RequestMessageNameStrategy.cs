@@ -4,8 +4,11 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
 {
     public class RequestMessageNameStrategy : NameGenerateStrategy<MethodInfo>
     {
-        public RequestMessageNameStrategy()
+        private readonly ServiceNameStrategy _serviceNameStrategy;
+
+        public RequestMessageNameStrategy(ServiceNameStrategy serviceNameStrategy)
         {
+            _serviceNameStrategy = serviceNameStrategy;
             this.Enabled = true;
             this.Priority = 1;
         }
@@ -14,7 +17,8 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
 
         protected override Models.NameModel Create(Elements.Element element, MethodInfo target)
         {
-            var name = $"{target.DeclaringType!.Name}_{target.Name}_RequestMessage";
+            var svcName = _serviceNameStrategy.GetServiceName(target.DeclaringType!).Name;
+            var name = $"{svcName}_{target.Name}_RequestMessage";
              
             return new Models.NameModel(name, $"Grpc{name}");
         }

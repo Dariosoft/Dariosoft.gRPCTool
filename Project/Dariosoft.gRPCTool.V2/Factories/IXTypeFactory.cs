@@ -14,10 +14,7 @@ namespace Dariosoft.gRPCTool.V2.Factories
             type = refinery.Refine(type, out var summary);
             var isTask = summary.WasATaskType;
             var isNullable = summary.WasANullableType;
-            
-           // type = ResolveTaskType(type, out var isTask);
-            //type = ResolveNullableType(type, out var isNullable);
-            
+         
             bool isVoid = type == typeof(void)
                 , isDictionary = IsDictionary(type)
                 , isArray = !isVoid && type != typeof(string) && !isDictionary && typeof(System.Collections.IEnumerable).IsAssignableFrom(type)
@@ -69,20 +66,6 @@ namespace Dariosoft.gRPCTool.V2.Factories
             };
 
             return result;
-        }
-
-        private Type ResolveTaskType(Type type, out bool isTask)
-        {
-            var refinedType = new TypeRefineries.TaskTypeRefiner().Refine(type);
-            isTask = refinedType != type;
-            return refinedType;
-        }
-
-        private Type ResolveNullableType(Type type, out bool isNullable)
-        {
-            var refinedType = new TypeRefineries.NullableTypeRefiner().Refine(type);
-            isNullable = refinedType != type;
-            return refinedType;
         }
         
         private Type? GetArrayElementType(Type type)

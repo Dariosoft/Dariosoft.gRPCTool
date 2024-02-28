@@ -15,7 +15,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
         protected override Models.NameModel Create(Elements.Element element, Type target)
             => GetServiceName(target);
 
-        protected Models.NameModel GetServiceName(Type serviceType)
+        public Models.NameModel GetServiceName(Type serviceType)
         {
             var name = GetFromAttribute(serviceType);
 
