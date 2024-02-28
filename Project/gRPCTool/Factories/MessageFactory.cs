@@ -15,6 +15,11 @@
     {
         public Models.IMessageElement Create(ElementTypes.IElement element)
         {
+            if (element.Type == Enums.ElementType.Procedure)
+            {
+                
+            }
+            
             var model = strategies.FirstOrDefault(e => e.IsResponsible(element))?.Create(element)
                 ?? throw new NotSupportedException($"No message builder is supports the type \"{element.Type}\".");
 

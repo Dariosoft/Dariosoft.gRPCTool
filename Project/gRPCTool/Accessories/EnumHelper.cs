@@ -1,6 +1,6 @@
 ﻿namespace Dariosoft.gRPCTool.Accessories
 {
-    internal class EnumHelper
+    public class EnumHelper
     {
         private EnumHelper() { }
 

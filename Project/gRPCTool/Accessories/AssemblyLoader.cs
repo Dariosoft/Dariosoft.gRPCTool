@@ -13,6 +13,7 @@ namespace Dariosoft.gRPCTool.Accessories
     {
         private readonly Options _options;
         private readonly ILogger _logger;
+
         public AssemblyLoader(ILogger logger, IOptions<Options> options)
         {
             _logger = logger;
@@ -25,8 +26,8 @@ namespace Dariosoft.gRPCTool.Accessories
             try
             {
                 return File.Exists(filename)
-                        ? AssemblyLoadContext.Default.LoadFromAssemblyPath(filename)
-                        : null;
+                    ? AssemblyLoadContext.Default.LoadFromAssemblyPath(filename)
+                    : null;
             }
             catch (Exception err)
             {
@@ -34,15 +35,15 @@ namespace Dariosoft.gRPCTool.Accessories
                 return null;
             }
         }
+
         private Assembly? OnAssemblyResolve(AssemblyLoadContext context, AssemblyName assemblyName)
         {
             var assembly = ResolveAssembly(context, assemblyName, [_options.NugetPackagesDirectory]);
-            if (assembly is null)
-                assembly = ResolveAssembly(context, assemblyName, _options.AssemblySearchPaths);
+            assembly ??= ResolveAssembly(context, assemblyName, _options.AssemblySearchPaths);
             return assembly;
         }
 
-        private Assembly? ResolveAssembly(AssemblyLoadContext context, AssemblyName assemblyName, string[] searchDirectories)
+        private Assembly? ResolveAssembly(AssemblyLoadContext context, AssemblyName assemblyName, IEnumerable<string> searchDirectories)
         {
             var matchedFiles = searchDirectories
                 .Distinct()
@@ -50,13 +51,12 @@ namespace Dariosoft.gRPCTool.Accessories
                 .ToArray();
 
             Assembly? target = null;
-            AssemblyName asmName;
 
             try
             {
                 for (var i = 0; i < matchedFiles.Length; i++)
                 {
-                    asmName = AssemblyName.GetAssemblyName(matchedFiles[i]);
+                    var asmName = AssemblyName.GetAssemblyName(matchedFiles[i]);
 
                     if (asmName.FullName == assemblyName.FullName)
                     {
@@ -73,7 +73,5 @@ namespace Dariosoft.gRPCTool.Accessories
 
             return target;
         }
-
-
     }
 }

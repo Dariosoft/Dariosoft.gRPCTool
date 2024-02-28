@@ -8,8 +8,8 @@
     {
         public override void Enqueue(ElementTypes.EnumElement element)
         {
-            if (!typeAnalyzer.Analyze(element.source).IsEnum)
-                throw new ArgumentException($"{element.source.FullName ?? element.source.Name} is not an enum.");
+            if (!typeAnalyzer.Analyze(element.Source).IsEnum)
+                throw new ArgumentException($"{element.Source.FullName ?? element.Source.Name} is not an enum.");
 
             base.Enqueue(element);
         }
