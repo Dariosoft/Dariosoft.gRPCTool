@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace Dariosoft.gRPCTool.V2.Components
 {
-    public class ProtobufProcedureRequestMessageModel: IComponent
+    public class ProtobufProcedureRequestMessageComponent: IComponent
     {
         public string Id => Name.ProtobufName;
         

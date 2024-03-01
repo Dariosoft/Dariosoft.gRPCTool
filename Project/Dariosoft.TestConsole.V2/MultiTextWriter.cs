@@ -3,7 +3,7 @@
 namespace Dariosoft.TestConsole.V2
 {
 
-    public class MultiTextWriter : TextWriter, gRPCTool.V2.Utilities.IOuput
+    public class MultiTextWriter : TextWriter, gRPCTool.V2.Utilities.IOuputWriter
     {
         private readonly TextWriter[] writers;
 

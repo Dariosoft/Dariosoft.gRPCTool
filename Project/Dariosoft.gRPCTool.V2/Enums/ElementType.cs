@@ -7,6 +7,7 @@ namespace Dariosoft.gRPCTool.V2.Enums
         RequestMessage = 3,
         ReplyMessage = 4,
         Message = 5,
-        Enum = 6
+        Enum = 6,
+        EmptyMessage = 7
     }
 }

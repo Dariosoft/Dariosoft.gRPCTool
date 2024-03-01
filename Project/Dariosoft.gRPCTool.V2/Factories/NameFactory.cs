@@ -14,14 +14,18 @@ namespace Dariosoft.gRPCTool.V2.Factories
         public NameFactory(IEnumerable<ElementNameStrategies.INameGenerateStrategy> strategies)
         {
             _strategies = strategies.Where(e => e.Enabled)
-                .OrderBy(e => e.Target)
+                .OrderBy(e => e.ElementType)
                 .ThenBy(e => e.Priority)
                 .ToArray();
         }
 
         public Models.NameModel Create(Elements.Element element)
         {
-            var strategy = _strategies.FirstOrDefault(e => e.Target == element.Type);
+            var strategy = _strategies.FirstOrDefault(e => e.ElementType == element.Type);
+            if (strategy is null)
+            {
+                
+            }
             return strategy is null
                 ? new Models.NameModel(element.Target.Name, $"Grpc{element.Target.Name}")
                 : strategy.Create(element);

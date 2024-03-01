@@ -13,7 +13,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
             this.Priority = 1;
         }
 
-        public override Enums.ElementType Target { get; } = Enums.ElementType.RequestMessage;
+        public override Enums.ElementType ElementType { get; } = Enums.ElementType.RequestMessage;
 
         protected override Models.NameModel Create(Elements.Element element, MethodInfo target)
         {

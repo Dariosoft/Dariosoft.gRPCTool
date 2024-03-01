@@ -10,11 +10,11 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
             this.Priority = 1;
         }
 
-        public override Enums.ElementType Target { get; } = Enums.ElementType.Procedure;
+        public override Enums.ElementType ElementType { get; } = Enums.ElementType.Procedure;
 
         protected override Models.NameModel Create(Elements.Element element, MethodInfo target)
         {
-            return new Models.NameModel(target.Name, target.Name);
+            return new Models.NameModel(target.Name);
         }
     }
 }

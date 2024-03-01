@@ -9,48 +9,37 @@ namespace Dariosoft.gRPCTool.V2
             var allTypes = typeof(Startup).Assembly.GetTypes();
 
             return services
-                .RegisterComonentComposers(allTypes)
-                .RegisterOf(typeof(ElementNameStrategies.INameGenerateStrategy), allTypes)
-                .RegisterOf(typeof(TypeRefineries.ITypeRefiner), allTypes)
-                
+                .RegisterOf(typeof(ElementNameStrategies.INameGenerateStrategy), allTypes, true)
+                .RegisterOf(typeof(TypeRefineries.ITypeRefiner), allTypes, true)
+                .RegisterOf(typeof(MessageCreationStrategies.MessageCreationStrategy), allTypes, false)
+                .RegisterOf(typeof(Composers.ComponentComposer), allTypes, false)
+                .RegisterOf(typeof(ProtoWriters.ProtoWriter), allTypes, false)
                 .AddSingleton<Utilities.IAssemblyLoader, Utilities.AssemblyLoader>()
                 .AddSingleton<Utilities.ILogger, Utilities.ConsoleLogger>()
                 
                 .AddSingleton<Factories.IProtobufComponentFactory, Factories.ProtobufComponentFactory>()
                 .AddSingleton<Factories.INameFactory, Factories.NameFactory>()
                 .AddSingleton<Factories.IXTypeFactory, Factories.XTypeFactory>()
+                .AddSingleton<Factories.IProtobufMessageComponentFactory, Factories.ProtobufMessageComponentFactory>()
+                .AddSingleton<Factories.IProtobufDataTypeFactory, Factories.ProtobufDataTypeFactory>()
+                .AddSingleton<Factories.IProtoFileFactory, Factories.ProtoFileFactory>()
                 
                 .AddSingleton<ElementNameStrategies.ServiceNameStrategy>()
-                
                 .AddSingleton<TypeRefineries.ITypeRefinery, TypeRefineries.TypeRefinery>()
                 .AddSingleton<IEngine, Engine>()
                 .Configure(configure);
         }
 
-        private static IServiceCollection RegisterComonentComposers(this IServiceCollection services, IEnumerable<Type> types)
+        private static IServiceCollection RegisterOf(this IServiceCollection services, Type baseType, IEnumerable<Type> types, bool baseTypeIsService)
         {
-            var baseType = typeof(Composers.ComponentComposer);
+            var serviceTypes = types.Where(t => t is { IsClass: true, IsAbstract: false } && t.IsAssignableTo(baseType)).ToArray();
 
-            var composerTypes = types.Where(t => t is { IsClass: true, IsAbstract: false } && t.IsAssignableTo(baseType)).ToArray();
-
-            for (var i = 0; i < composerTypes.Length; i++)
-            {
-                services.AddSingleton(composerTypes[i]);
-            }
-
-            return services;
-        }
-        
-        
-        private static IServiceCollection RegisterOf(this IServiceCollection services, Type baseType, IEnumerable<Type> types)
-        {
-
-            var composerTypes = types.Where(t => t is { IsClass: true, IsAbstract: false } && t.IsAssignableTo(baseType)).ToArray();
-
-            for (var i = 0; i < composerTypes.Length; i++)
-            {
-                services.AddSingleton(serviceType:baseType, implementationType: composerTypes[i]);
-            }
+            if (baseTypeIsService)
+                for (var i = 0; i < serviceTypes.Length; i++)
+                    services.AddSingleton(serviceType: baseType, implementationType: serviceTypes[i]);
+            else
+                for (var i = 0; i < serviceTypes.Length; i++)
+                    services.AddSingleton(serviceTypes[i]);
 
             return services;
         }

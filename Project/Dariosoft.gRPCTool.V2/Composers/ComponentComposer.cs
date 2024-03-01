@@ -9,9 +9,8 @@ namespace Dariosoft.gRPCTool.V2.Composers
 
         protected ComponentComposer? Next { get; }
 
-        protected virtual void Process(Components.ProtobufComponent component)
-        {
-        }
+        protected abstract void Process(Components.ProtobufComponent component);
+
 
         public void Accept(Components.ProtobufComponent component)
         {

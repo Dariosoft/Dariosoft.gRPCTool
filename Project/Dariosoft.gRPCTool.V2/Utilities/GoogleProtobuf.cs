@@ -18,7 +18,7 @@
         public const string Duration = "google.protobuf.Duration";
         public const string Bytes = "bytes";
 
-        public static IDictionary<Type, string> TypeMap = new Dictionary<Type, string>
+        public static readonly IDictionary<Type, string> TypeMap = new Dictionary<Type, string>
         {
             { typeof(bool), "bool"},
             { typeof(double), "double"},
@@ -28,6 +28,7 @@
             { typeof(long), "int64"},
             { typeof(ulong), "uint64"},
             { typeof(string), "string"},
+            { typeof(Guid), "string"},
             { typeof(byte[]), GoogleProtobuf.Bytes},
             { typeof(TimeSpan), GoogleProtobuf.Duration},
             { typeof(DateOnly), GoogleProtobuf.Timestamp},
@@ -35,7 +36,7 @@
             { typeof(DateTimeOffset), GoogleProtobuf.Timestamp},
         };
 
-        public static IDictionary<Type, string> NullableTypeMap = new Dictionary<Type, string>
+        public static readonly IDictionary<Type, string> NullableTypeMap = new Dictionary<Type, string>
         {
              { typeof(bool), "google.protobuf.BoolValue"},
              { typeof(double), "google.protobuf.DoubleValue"},

@@ -24,5 +24,31 @@ namespace Dariosoft.gRPCTool.V2.Models
         public string WellFormedName { get; init; } = "";
         
         public override string ToString() => WellFormedName;
+
+        public static XType Void()
+            => new XType(
+                IsArray: false,
+                IsBuffer: false,
+                IsComplexStruct: false,
+                IsComplex: false,
+                IsDateTimeRelated: false,
+                IsDictionary: false,
+                IsEnum: false,
+                IsGeneric: false,
+                IsGuid: false,
+                IsNullable: false,
+                IsPrimitive: false,
+                IsStream: false,
+                IsTask: false,
+                IsTuple: false,
+                IsTimeSpan: false,
+                IsVoid: true,
+                // ArrayElementType: arrayElementType,
+                DictionaryKeyType: null,
+                DictionaryValueType: null)
+            {
+                Type = typeof(void),
+                WellFormedName = "void"
+            };
     }
 }

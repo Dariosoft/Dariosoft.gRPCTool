@@ -12,8 +12,9 @@ namespace Dariosoft.gRPCTool.V2
         IOptions<Options> options,
         Utilities.ILogger logger,
         Utilities.IAssemblyLoader assemblyLoader,
-        Factories.IProtobufComponentFactory factory
-        ): IEngine
+        Factories.IProtobufComponentFactory factory,
+        Factories.IProtoFileFactory protoFileFactory
+    ) : IEngine
     {
         public void Start()
         {
@@ -21,7 +22,7 @@ namespace Dariosoft.gRPCTool.V2
 
             Assembly? assembly = null;
             var assemblyName = "";
-            
+
             for (var i = 0; i < options.Value.AssemblyFiles.Length; i++)
             {
                 assemblyName = Path.GetFileNameWithoutExtension(options.Value.AssemblyFiles[i]);
@@ -29,7 +30,7 @@ namespace Dariosoft.gRPCTool.V2
                 logger.Info($"Try to load the assembly {assemblyName}");
 
                 assembly = assemblyLoader.Load(options.Value.AssemblyFiles[i]);
-                
+
                 if (assembly is not null)
                 {
                     logger.Info($"Starting generate protobuf from the assembly {assemblyName}");
@@ -37,7 +38,9 @@ namespace Dariosoft.gRPCTool.V2
                     Console.WriteLine("======= Begin of the Protobuf Content ===========");
 
                     var protobuf = factory.Create(assembly);
-                   // protobufWriter.Write(textWriter, protobuf);
+                    protoFileFactory.Create(protobuf);
+                    
+                    // protobufWriter.Write(textWriter, protobuf);
 
                     Console.WriteLine("======= End of the Protobuf Content ===========");
                 }

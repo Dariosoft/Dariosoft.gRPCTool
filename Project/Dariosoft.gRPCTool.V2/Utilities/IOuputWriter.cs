@@ -1,6 +1,6 @@
 namespace Dariosoft.gRPCTool.V2.Utilities
 {
-    public interface IOuput : IDisposable, IAsyncDisposable
+    public interface IOuputWriter : IDisposable, IAsyncDisposable
     {
         #region Write
         void Write(char value);

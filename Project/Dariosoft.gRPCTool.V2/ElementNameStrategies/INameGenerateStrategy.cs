@@ -6,7 +6,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
 
         int Priority { get; }
         
-        Enums.ElementType Target { get; }
+        Enums.ElementType ElementType { get; }
 
         Models.NameModel Create(Elements.Element element);
     }

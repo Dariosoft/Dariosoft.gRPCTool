@@ -10,7 +10,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
             this.Priority = 1;
         }
 
-        public override Enums.ElementType Target { get; } = Enums.ElementType.Service;
+        public override Enums.ElementType ElementType { get; } = Enums.ElementType.Service;
 
         protected override Models.NameModel Create(Elements.Element element, Type target)
             => GetServiceName(target);

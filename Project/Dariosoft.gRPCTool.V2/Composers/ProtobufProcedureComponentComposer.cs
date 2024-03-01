@@ -30,14 +30,14 @@ namespace Dariosoft.gRPCTool.V2.Composers
                         {
                             Source = e,
                             Name = nameFactory.Create(e),
-                            RequestMessage = new Components.ProtobufProcedureRequestMessageModel
+                            RequestMessage = new Components.ProtobufProcedureRequestMessageComponent
                             {
                                 Name = reqMessageElement.HasParameter() ? nameFactory.Create(reqMessageElement) : nameFactory.GoogleEmptyMessage(),
                                 Source = reqMessageElement,
                             },
                             ReplyMessage = new Components.ProtobufMessageComponent
                             {
-                                Name = replyMessageElement.MessageType.IsVoid ? nameFactory.GoogleEmptyMessage() :  nameFactory.Create(replyMessageElement),
+                                Name = replyMessageElement.MessageType.IsVoid ? nameFactory.GoogleEmptyMessage() : nameFactory.Create(replyMessageElement),
                                 Source = replyMessageElement,
                             }
                         };

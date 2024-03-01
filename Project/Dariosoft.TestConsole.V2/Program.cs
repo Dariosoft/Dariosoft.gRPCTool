@@ -60,7 +60,7 @@ class Program
 
         builder.Services
             .AddSingleton<Filters.IServiceTypeFilter, ServiceTypeFilter>()
-            .AddSingleton<Factories.IOutputFactory, OutputFactory>()
+            .AddSingleton<Factories.IOutputWriterFactory, OutputWriterFactory>()
            // .AddSingleton<TypeRefineries.ITypeRefiner, RequestRefiner>()
             .AddgRPCTool(options =>
             {

@@ -6,56 +6,42 @@ namespace Dariosoft.gRPCTool.V2.Elements
     {
         protected Element(MemberInfo target, Enums.ElementType type)
         {
+            if (type is Enums.ElementType.Procedure or Enums.ElementType.RequestMessage && target is not MethodInfo)
+                throw new ArgumentException("Mismatch target.", nameof(target));
+
+            if (type is not (Enums.ElementType.Procedure or Enums.ElementType.RequestMessage) && target is MethodInfo)
+                throw new ArgumentException("Mismatch target.", nameof(target));
+
+            if (type is not Enums.ElementType.Enum && target is System.Type { IsEnum: true })
+                throw new ArgumentException("Mismatch target.", nameof(target));
+
             this.Target = target;
             this.Type = type;
+            Key = GenearetKey();
         }
 
+        public string Key { get; }
         public MemberInfo Target { get; }
 
         public Enums.ElementType Type { get; }
-    }
 
-    public class ServiceElement : Element
-    {
-        public ServiceElement(Type serviceType)
-            : base(Elligable(serviceType) ? serviceType : throw new ArgumentException("The service type must be a class or an interface.", nameof(serviceType)), Enums.ElementType.Service)
+        private string GenearetKey()
         {
-            this.ServiceType = serviceType;
+            var name = Target switch
+            {
+                Type t => (t.FullName ?? t.Name).ComputeHash(),
+                MethodInfo m => $"{m.DeclaringType!.FullName ?? m.DeclaringType.Name}_{m.Name}".ComputeHash(),
+                _ => Type switch
+                {
+                    Enums.ElementType.EmptyMessage => Utilities.GoogleProtobuf.EmptyMessage,
+                    _ => ""
+                }
+            };
+
+            return name;
         }
 
-        public Type ServiceType { get; }
-
-        private static bool Elligable(Type serviceType)
-        {
-            return (serviceType.IsClass || serviceType.IsInterface) &&
-                   serviceType != typeof(object) &&
-                   serviceType != typeof(void) &&
-                   serviceType is { IsEnum: false, IsPrimitive: false };
-        }
-    }
-
-    public class ProcedureElement : Element
-    {
-        public ProcedureElement(MethodInfo methodInfo)
-            : base(methodInfo, Enums.ElementType.Procedure)
-        {
-            this.MethodInfo = methodInfo;
-        }
-
-        public MethodInfo MethodInfo { get; }
-    }
-
-    public class RequestMessageElement : Element
-    {
-        public RequestMessageElement(MethodInfo methodInfo)
-            : base(methodInfo, Enums.ElementType.RequestMessage)
-        {
-            this.MethodInfo = methodInfo;
-        }
-
-        public MethodInfo MethodInfo { get; }
-
-        public bool HasParameter() => MethodInfo.GetParameters().Any(p => !p.IsOut);
+        public override int GetHashCode() => Key.GetHashCode();
     }
 
     /* public class ReplyMessageElement : Element
@@ -65,26 +51,4 @@ namespace Dariosoft.gRPCTool.V2.Elements
          {
          }
      }*/
-
-    public class MessageElement : Element
-    {
-        private MessageElement(Models.XType target, Enums.ElementType type)
-            : base(target.Type, type)
-        {
-            MessageType = target;
-        }
-
-        public Models.XType MessageType { get; }
-        public static MessageElement ReplyMessage(Models.XType target) => new MessageElement(target, Enums.ElementType.ReplyMessage);
-
-        public static MessageElement DataMessage(Models.XType target) => new MessageElement(target, Enums.ElementType.Message);
-    }
-
-    public class EnumElement : Element
-    {
-        public EnumElement(Type type)
-            : base(type.IsEnum ? type : throw new ArgumentException("The type is not an enum.", nameof(type)), Enums.ElementType.Enum)
-        {
-        }
-    }
 }

@@ -38,13 +38,14 @@ namespace Dariosoft.gRPCTool.V2.Factories
                 , isDateTimeRelated = type == typeof(DateTime) || type == typeof(DateTimeOffset) || type == typeof(DateOnly) || type == typeof(TimeOnly)
                 , isTimeSpan = type == typeof(TimeSpan)
                 , isComplexStruct = !isDateTimeRelated && !isTimeSpan && IsComplexStruct(type)
-                , isTuple = Regex.IsMatch(input: type.FullName ?? type.Name, pattern: "^System.(Value)?Tuple`\\d+");
+                , isTuple = Regex.IsMatch(input: type.FullName ?? type.Name, pattern: "^System.(Value)?Tuple`\\d+")
+                , isStream = type.IsAssignableTo(typeof(Stream));
 
             var result = new Models.XType(
                 IsArray: isArray,
                 IsBuffer: isBuffer || type.IsAssignableTo(typeof(Stream)),
                 IsComplexStruct: isComplexStruct,
-                IsComplex: !isComplexStruct && !isVoid && !isPrimitive && !isArray && !isEnum && !isDictionary && !isTuple && (type.IsClass || type.IsInterface),
+                IsComplex: !(isPrimitive || isComplexStruct || isVoid || isDictionary || isArray || isBuffer || isStream || isEnum || isTuple) && (type.IsClass || type.IsInterface),
                 IsDateTimeRelated: isDateTimeRelated,
                 IsDictionary: isDictionary,
                 IsEnum: isEnum,
@@ -52,7 +53,7 @@ namespace Dariosoft.gRPCTool.V2.Factories
                 IsGuid: type == typeof(Guid),
                 IsNullable: isNullable,
                 IsPrimitive: isPrimitive,
-                IsStream: type.IsAssignableTo(typeof(Stream)),
+                IsStream: isStream,
                 IsTask: isTask,
                 IsTuple: isTuple,
                 IsTimeSpan: isTimeSpan,
