@@ -21,8 +21,10 @@ namespace Dariosoft.gRPCTool.V2
                 .AddSingleton<Factories.INameFactory, Factories.NameFactory>()
                 .AddSingleton<Factories.IXTypeFactory, Factories.XTypeFactory>()
                 .AddSingleton<Factories.IProtobufMessageComponentFactory, Factories.ProtobufMessageComponentFactory>()
-                .AddSingleton<Factories.IProtobufDataTypeFactory, Factories.ProtobufDataTypeFactory>()
                 .AddSingleton<Factories.IProtoFileFactory, Factories.ProtoFileFactory>()
+                
+                .AddSingleton<Providers.IProtobufDataTypeProvider, Providers.ProtobufDataTypeProvider>()
+                .AddSingleton<Providers.IProcedureParametersProvider, Providers.ProcedureParametersProvider>()
                 
                 .AddSingleton<ElementNameStrategies.ServiceNameStrategy>()
                 .AddSingleton<TypeRefineries.ITypeRefinery, TypeRefineries.TypeRefinery>()

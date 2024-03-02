@@ -6,6 +6,7 @@ namespace Dariosoft.gRPCTool.V2.Composers
         Factories.INameFactory nameFactory,
         Factories.IXTypeFactory xTypeFactory,
         IEnumerable<Filters.IProcedureFilter> filters,
+        Providers.IProcedureParametersProvider procedureParametersProvider,
         ProtobufMessageComponentComposer next) : ComponentComposer(next)
     {
         private readonly Filters.IProcedureFilter[] _filters = filters.Where(e => e.Enabled).OrderBy(e => e.Order).ToArray();
@@ -21,30 +22,46 @@ namespace Dariosoft.gRPCTool.V2.Composers
                 var procedures = GetMethods(service.Source)
                     .Where(m => _filters.All(f => f.Filter(m)))
                     .Select(m => new Elements.ProcedureElement(m))
-                    .Select(e =>
+                    .Select(e => new Components.ProtobufProcedureComponent
                     {
-                        var reqMessageElement = new Elements.RequestMessageElement(e.MethodInfo);
-                        var replyMessageElement = Elements.MessageElement.ReplyMessage(xTypeFactory.Create(e.MethodInfo.ReturnType));
-
-                        return new Components.ProtobufProcedureComponent
-                        {
-                            Source = e,
-                            Name = nameFactory.Create(e),
-                            RequestMessage = new Components.ProtobufProcedureRequestMessageComponent
-                            {
-                                Name = reqMessageElement.HasParameter() ? nameFactory.Create(reqMessageElement) : nameFactory.GoogleEmptyMessage(),
-                                Source = reqMessageElement,
-                            },
-                            ReplyMessage = new Components.ProtobufMessageComponent
-                            {
-                                Name = replyMessageElement.MessageType.IsVoid ? nameFactory.GoogleEmptyMessage() : nameFactory.Create(replyMessageElement),
-                                Source = replyMessageElement,
-                            }
-                        };
+                        Source = e,
+                        Name = nameFactory.Create(e),
+                        RequestMessage = GetRequestMessageComponent(e.MethodInfo),
+                        ReplyMessage = GetReplyMessage(e.MethodInfo),
                     });
 
                 service.Procedures.AddRange(procedures);
             }
+        }
+
+        private Components.ProtobufProcedureRequestMessageComponent? GetRequestMessageComponent(MethodInfo methodInfo)
+        {
+            var parameters = procedureParametersProvider.Provide(methodInfo).ToArray();
+            
+            if (parameters.Length == 0)
+                return null;
+
+            var reqMessageElement = new Elements.RequestMessageElement(methodInfo, parameters);
+
+            return new Components.ProtobufProcedureRequestMessageComponent
+            {
+                Name = nameFactory.Create(reqMessageElement),
+                Source = reqMessageElement,
+            };
+        }
+
+        private Components.ProtobufMessageComponent? GetReplyMessage(MethodInfo methodInfo)
+        {
+            var type = xTypeFactory.Create(methodInfo.ReturnType);
+            if (type.IsVoid) return null;
+
+            var replyMessageElement = Elements.MessageElement.ReplyMessage(type);
+
+            return new Components.ProtobufMessageComponent
+            {
+                Name = nameFactory.Create(replyMessageElement),
+                Source = replyMessageElement,
+            };
         }
 
         private MethodInfo[] GetMethods(Elements.ServiceElement service)

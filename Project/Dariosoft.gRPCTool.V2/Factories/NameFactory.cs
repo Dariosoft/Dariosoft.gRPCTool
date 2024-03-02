@@ -22,10 +22,7 @@ namespace Dariosoft.gRPCTool.V2.Factories
         public Models.NameModel Create(Elements.Element element)
         {
             var strategy = _strategies.FirstOrDefault(e => e.ElementType == element.Type);
-            if (strategy is null)
-            {
-                
-            }
+            
             return strategy is null
                 ? new Models.NameModel(element.Target.Name, $"Grpc{element.Target.Name}")
                 : strategy.Create(element);

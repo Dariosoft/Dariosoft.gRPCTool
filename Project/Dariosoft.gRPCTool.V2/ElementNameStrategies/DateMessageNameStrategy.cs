@@ -12,7 +12,12 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
 
         protected override Models.NameModel Create(Elements.Element element, Type target)
         {
-            var name = (target.FullName ?? target.Name).AsNameIdentifier();
+            if (Utilities.DariosoftProtobuf.ValueMessages.TryGetValue(target, out var name))
+            {
+                return new Models.NameModel(name, $"Grpc{name}");
+            }
+            
+            name = target.GetWellFormedName().AsNameIdentifier();
             return new Models.NameModel(name, $"Grpc{name}");
         }
     }

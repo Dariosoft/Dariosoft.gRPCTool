@@ -1,6 +1,6 @@
 namespace Dariosoft.gRPCTool.V2.TypeRefineries
 {
-    public class NullableTypeRefiner: ITypeRefiner
+    public class NullableTypeRefiner : ITypeRefiner
     {
         public bool Enabled { get; } = true;
 
@@ -15,4 +15,6 @@ namespace Dariosoft.gRPCTool.V2.TypeRefineries
 
         public override string ToString() => nameof(NullableTypeRefiner);
     }
+
+  
 }

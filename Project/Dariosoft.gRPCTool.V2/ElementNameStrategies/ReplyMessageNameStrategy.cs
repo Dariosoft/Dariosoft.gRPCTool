@@ -3,6 +3,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
     public class ReplyMessageNameStrategy : NameGenerateStrategy<Type>
     {
         private readonly Factories.IXTypeFactory _xTypeFactory;
+
         public ReplyMessageNameStrategy(Factories.IXTypeFactory xTypeFactory)
         {
             this.Enabled = true;
@@ -15,8 +16,9 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
         protected override Models.NameModel Create(Elements.Element element, Type target)
         {
             var xType = _xTypeFactory.Create(target);
-            var name = xType.WellFormedName.AsNameIdentifier();
-            
+            if (!Utilities.DariosoftProtobuf.ValueMessages.TryGetValue(xType.Type, out var name))
+                name = xType.WellFormedName.AsNameIdentifier();
+
             if (xType.IsArray)
             {
             }
@@ -24,7 +26,7 @@ namespace Dariosoft.gRPCTool.V2.ElementNameStrategies
             {
                 name = "ByteArray"; //name.TrimEnd(' ', '_')
             }
-           
+
             return new Models.NameModel(name, $"Grpc{name}");
         }
     }

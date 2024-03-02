@@ -10,8 +10,8 @@ namespace Dariosoft.gRPCTool.V2.Components
         
         public required NameModel Name { get; init; }
         
-        public required ProtobufProcedureRequestMessageComponent RequestMessage { get; init; }
-        public required ProtobufMessageComponent ReplyMessage { get; init; }
+        public ProtobufProcedureRequestMessageComponent? RequestMessage { get; init; }
+        public ProtobufMessageComponent? ReplyMessage { get; init; }
         
       //  public required Elements.RequestMessageElement RequestMessage { get; init; }
         

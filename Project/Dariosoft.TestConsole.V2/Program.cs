@@ -1,4 +1,5 @@
-﻿using Dariosoft.gRPCTool.V2;
+﻿using System.Globalization;
+using Dariosoft.gRPCTool.V2;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ class RequestRefiner : TypeRefineries.ITypeRefiner
 
     public Type Refine(Type input)
     {
-        if(input.IsAssignableTo(typeof(IRequest)))
+        if(input.IsAssignableTo(typeof(Dariosoft.Framework.IRequest)))
         {
             input = input.GenericTypeArguments.Length > 0 
                 ? input.GenericTypeArguments[0] 
@@ -44,9 +45,11 @@ class Program
 {
     static void Main(string[] args)
     {
+        
+        
         args =
         [
-            // "--nugets-path=bugetfolder",
+            // "--nugets-path=nugetfolder",
             "--assembly-search-path=D:/Dariosoft/Projects/2024/AppCenter_V2/Backend/Dariosoft.AppCenter",
             "--assembly=D:/Dariosoft/Projects/2024/AppCenter_V2/Backend/Dariosoft.AppCenter/Apps/EndPoint.Abstraction/bin/Debug/net8.0/Dariosoft.AppCenter.EndPoint.Abstraction.dll",
         ];
@@ -61,7 +64,7 @@ class Program
         builder.Services
             .AddSingleton<Filters.IServiceTypeFilter, ServiceTypeFilter>()
             .AddSingleton<Factories.IOutputWriterFactory, OutputWriterFactory>()
-           // .AddSingleton<TypeRefineries.ITypeRefiner, RequestRefiner>()
+         //   .AddSingleton<TypeRefineries.ITypeRefiner, RequestRefiner>()
             .AddgRPCTool(options =>
             {
                 options.NugetPackagesDirectory = builder.Configuration.GetNugetPackagesDirectory();

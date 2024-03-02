@@ -1,9 +1,11 @@
 
+using Dariosoft.gRPCTool.V2.Providers;
+
 namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
 {
     class ReplyMessageStrategy(
         Factories.INameFactory nameFactory, 
-        Factories.IProtobufDataTypeFactory dataTypeFactory,
+        IProtobufDataTypeProvider dataTypeProvider,
         
         DataMessageStrategy dataMessageStrategy) : MessageCreationStrategy
     {
@@ -12,13 +14,20 @@ namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
             if (element.MessageType.IsComplex)
                 return dataMessageStrategy.Create(element, enqueue);
             
+            var dataType = dataTypeProvider.Provide(element.MessageType, enqueue);
+
+            // if (dataType.IsValueMessage)
+            // {
+            //     
+            // }
+            
             var component = new Components.ProtobufMessageComponent
             {
                 Name = nameFactory.Create(element),
                 Source = element,
             };
 
-            var dataType = dataTypeFactory.Create(element.MessageType, enqueue);
+            
             component.Members.Add(new Components.ProtobufMessageMemberComponent
             {
                 Index = 1,

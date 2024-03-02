@@ -1,4 +1,3 @@
-
 namespace Dariosoft.gRPCTool.V2.Composers
 {
     public class ProtobufMessageComponentComposer(Factories.IProtobufMessageComponentFactory messageComponentFactory) : ComponentComposer(null)
@@ -21,10 +20,10 @@ namespace Dariosoft.gRPCTool.V2.Composers
                 {
                     var procedure = service.Procedures.ElementAt(p);
 
-                    if (procedure.RequestMessage.Source.HasParameter())
+                    if (procedure.RequestMessage is not null)
                         component.Messages.Add(CreateMessageComponent(procedure.RequestMessage.Source));
 
-                    if (!(procedure.ReplyMessage.Source as Elements.MessageElement)!.MessageType.IsVoid)
+                    if (procedure.ReplyMessage is not null)
                         component.Messages.Add(CreateMessageComponent(procedure.ReplyMessage.Source));
                 }
             }
@@ -50,5 +49,6 @@ namespace Dariosoft.gRPCTool.V2.Composers
         
         private Components.ProtobufMessageComponent CreateMessageComponent(Elements.Element element)
             => (messageComponentFactory.Create(element, Enqueue) as Components.ProtobufMessageComponent)!;
+
     }
 }

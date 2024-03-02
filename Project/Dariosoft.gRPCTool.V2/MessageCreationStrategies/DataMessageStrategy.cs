@@ -1,10 +1,11 @@
 using System.Reflection;
+using Dariosoft.gRPCTool.V2.Providers;
 
 namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
 {
     class DataMessageStrategy(
         Factories.INameFactory nameFactory,
-        Factories.IProtobufDataTypeFactory dataTypeFactory,
+        IProtobufDataTypeProvider dataTypeProvider,
         Factories.IXTypeFactory xTypeFactory
     ) : MessageCreationStrategy
     {
@@ -15,14 +16,12 @@ namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
                 Name = nameFactory.Create(element),
                 Source = element,
             };
-
-            var props = GetProperties(element.MessageType.Type)
-                // .Select((p, i) => )
-                .ToArray();
+      
+            var props = GetProperties(element.MessageType.Type).ToArray();
 
             for (var i = 0; i < props.Length; i++)
             {
-                var dataType = dataTypeFactory.Create(xTypeFactory.Create(props[i].PropertyType), enqueue);
+                var dataType = dataTypeProvider.Provide(xTypeFactory.Create(props[i].PropertyType), enqueue);
                 component.Members.Add(
                     new Components.ProtobufMessageMemberComponent
                     {

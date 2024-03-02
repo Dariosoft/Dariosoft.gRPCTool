@@ -75,7 +75,10 @@ namespace Dariosoft.gRPCTool.V2.ProtoWriters
 
         private void WriteAProcedure(Utilities.IOuputWriter writer, Components.ProtobufProcedureComponent procedure)
         {
-            writer.WriteLine($"rpc {procedure.Name.ProtobufName}({procedure.RequestMessage.Name.ProtobufName}) returns({procedure.ReplyMessage.Name.ProtobufName});");
+            var reqMessage = procedure.RequestMessage is null ? Utilities.GoogleProtobuf.EmptyMessage : procedure.RequestMessage.Name.ProtobufName;
+            var repMessage = procedure.ReplyMessage is null ? Utilities.GoogleProtobuf.EmptyMessage : procedure.ReplyMessage.Name.ProtobufName;
+            
+            writer.WriteLine($"rpc {procedure.Name.ProtobufName}({reqMessage}) returns({repMessage});");
         }
     }
 
@@ -150,7 +153,7 @@ namespace Dariosoft.gRPCTool.V2.ProtoWriters
 
         private void WriteOneof(string name, Utilities.IOuputWriter writer, Components.MessageMemberOneOf[] items)
         {
-            writer.WriteLine($"{name} {{");
+            writer.WriteLine($"oneof {name} {{");
             items = items.OrderBy(i => i.Index).ToArray();
             for (var i = 0; i < items.Length; i++)
                 writer.WriteLine($"{items[i].DataType} {items[i].Name} = {items[i].Index};");

@@ -1,14 +1,16 @@
+using Dariosoft.gRPCTool.V2.Providers;
+
 namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
 {
     class RequestMessageStrategy(
         Factories.INameFactory nameFactory,
-        Factories.IProtobufDataTypeFactory dataTypeFactory,
+        IProtobufDataTypeProvider dataTypeProvider,
         Factories.IXTypeFactory xTypeFactory
     ) : MessageCreationStrategy
     {
         public Components.ProtobufMessageComponent Create(Elements.RequestMessageElement element, Delegates.EnqueueElement enqueue)
         {
-            if (!element.HasParameter())
+            if (element.Parameters.Length == 0)
                 throw new ArgumentException("The element has no parameters.", nameof(element));
 
             var component = new Components.ProtobufMessageComponent
@@ -24,7 +26,7 @@ namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
 
             for (var p = 0; p < parameters.Length; p++)
             {
-                var dataType = dataTypeFactory.Create(xTypeFactory.Create(parameters[p].ParameterType), enqueue);
+                var dataType = dataTypeProvider.Provide(xTypeFactory.Create(parameters[p].ParameterType), enqueue);
 
                 component.Members.Add(
                     new Components.ProtobufMessageMemberComponent
@@ -37,7 +39,6 @@ namespace Dariosoft.gRPCTool.V2.MessageCreationStrategies
                             : []
                     });
             }
-
 
             return component;
         }
