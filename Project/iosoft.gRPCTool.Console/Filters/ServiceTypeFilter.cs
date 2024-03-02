@@ -1,7 +1,6 @@
-using Filters = Dariosoft.gRPCTool.Filters;
 using IServiceTypeFilter = Dariosoft.gRPCTool.Filters.IServiceTypeFilter;
 
-namespace Dariosoft.TestConsole
+namespace iosoft.gRPCTool.Console.Filters
 {
     public class ServiceTypeFilter: IServiceTypeFilter
     {

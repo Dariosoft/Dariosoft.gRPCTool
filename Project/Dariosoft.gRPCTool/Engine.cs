@@ -5,7 +5,7 @@ namespace Dariosoft.gRPCTool
 {
     public interface IEngine
     {
-        void Start();
+        void Start(params string[] assemblyFiles);
     }
 
     class Engine(
@@ -16,20 +16,20 @@ namespace Dariosoft.gRPCTool
         Factories.IProtoFileFactory protoFileFactory
     ) : IEngine
     {
-        public void Start()
+        public void Start(params string[] assemblyFiles)
         {
             logger.Info("The engine has started.");
 
             Assembly? assembly = null;
             var assemblyName = "";
 
-            for (var i = 0; i < options.Value.AssemblyFiles.Length; i++)
+            for (var i = 0; i < assemblyFiles.Length; i++)
             {
-                assemblyName = Path.GetFileNameWithoutExtension(options.Value.AssemblyFiles[i]);
+                assemblyName = Path.GetFileNameWithoutExtension(assemblyFiles[i]);
 
                 logger.Info($"Try to load the assembly {assemblyName}");
 
-                assembly = assemblyLoader.Load(options.Value.AssemblyFiles[i]);
+                assembly = assemblyLoader.Load(assemblyFiles[i]);
 
                 if (assembly is not null)
                 {
@@ -38,8 +38,12 @@ namespace Dariosoft.gRPCTool
                     Console.WriteLine("======= Begin of the Protobuf Content ===========");
 
                     var protobuf = factory.Create(assembly);
-                    protoFileFactory.Create(protobuf);
                     
+                    using (var output = protoFileFactory.Create(protobuf))
+                    {
+                        output.Flush();
+                        output.Close();
+                    }
                     // protobufWriter.Write(textWriter, protobuf);
 
                     Console.WriteLine("======= End of the Protobuf Content ===========");

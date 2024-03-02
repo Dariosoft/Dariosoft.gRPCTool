@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Dariosoft.gRPCTool.Utilities;
 
-namespace Dariosoft.TestConsole
+namespace iosoft.gRPCTool.Console.Utilities
 {
 
     public class MultiTextWriter : TextWriter, IOuputWriter

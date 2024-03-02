@@ -6,6 +6,6 @@ namespace Dariosoft.gRPCTool
 
         public string[] AssemblySearchPaths { get; set; } = [];
 
-        public string[] AssemblyFiles { get; set; } = [];
+        //public required string[] AssemblyFiles { get; set; }
     }
 }

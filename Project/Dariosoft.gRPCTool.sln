@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dariosoft.gRPCTool", "Dariosoft.gRPCTool\Dariosoft.gRPCTool.csproj", "{59AA9506-1F3D-4230-BC6F-CC3138436E19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dariosoft.TestConsole", "Dariosoft.TestConsole\Dariosoft.TestConsole.csproj", "{25992AC6-CCDB-427E-9508-DC25C636F85F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iosoft.gRPCTool.Console", "iosoft.gRPCTool.Console\iosoft.gRPCTool.Console.csproj", "{25992AC6-CCDB-427E-9508-DC25C636F85F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

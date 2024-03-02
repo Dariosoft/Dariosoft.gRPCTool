@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Dariosoft.TestConsole
+namespace iosoft.gRPCTool.Console
 {
     static class Extensions
     {

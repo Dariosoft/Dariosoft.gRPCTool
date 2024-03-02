@@ -3,16 +3,16 @@ namespace Dariosoft.gRPCTool.Factories
 {
     public interface IProtoFileFactory
     {
-        void Create(Components.ProtobufComponent component);
+        Utilities.IOuputWriter Create(Components.ProtobufComponent component);
     }
     
     class ProtoFileFactory(IOutputWriterFactory outputWriterFactory, ProtoWriters.ProtoHeaderWriter writer):IProtoFileFactory
     {
-        public void Create(Components.ProtobufComponent component)
+        public  Utilities.IOuputWriter Create(Components.ProtobufComponent component)
         {
-            var protoFileOutput = outputWriterFactory.Create(component);
+            var protoFileOutput = outputWriterFactory.CreateProtoFileOutputWriter(component);
             writer.Accept(protoFileOutput, component);
-            protoFileOutput.Flush();
+            return protoFileOutput;
         }
         
     }
